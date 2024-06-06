@@ -7,5 +7,15 @@
     "test": "start"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@azure/storage-blob": "^12.23.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "multer-azure-blob-storage": "^1.2.0",
+    "mysql2": "^3.10.0",
+    "sequelize": "^6.37.3"
+  }
 }
