@@ -1,0 +1,11 @@
+{
+  "name": "bloom",
+  "version": "1.0.0",
+  "description": "bloom server",
+  "main": "app.js",
+  "scripts": {
+    "test": "start"
+  },
+  "author": "",
+  "license": "ISC"
+}
