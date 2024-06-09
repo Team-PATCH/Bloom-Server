@@ -12,7 +12,6 @@ class Market extends Sequelize.Model {
                 name: {
                     type: Sequelize.STRING(20),
                     allowNull: false,
-                    unique: true,
                 },
                 summary: {
                     type: Sequelize.STRING(30),
@@ -63,6 +62,9 @@ class Market extends Sequelize.Model {
 
     static associate(db) {
         db.Market.hasMany(db.Product, { foreignKey: 'market_id'});
+        db.Market.hasMany(db.InterestMarket, { foreignKey: 'market_id'});
+        db.Market.hasMany(db.OperatingTime, { foreignKey: 'market_id'});
+        db.Market.hasMany(db.MarketImage, { foreignKey: 'market_id'});
     }
 }
 

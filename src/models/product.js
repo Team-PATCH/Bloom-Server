@@ -12,7 +12,6 @@ class Product extends Sequelize.Model {
                 name: {
                     type: Sequelize.STRING(20),
                     allowNull: false,
-                    unique: true,
                 },
                 category: {
                     type: Sequelize.STRING(10),
@@ -56,6 +55,7 @@ class Product extends Sequelize.Model {
     static associate(db) {
         db.Product.belongsTo(db.Market, { foreignKey: 'market_id' });
         db.Product.hasMany(db.InterestProduct, { foreignKey: 'product_id' });
+        db.Product.hasMany(db.ProductImage, { foreignKey: 'product_id' });
     }
 }
 
