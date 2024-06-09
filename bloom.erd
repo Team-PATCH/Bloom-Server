@@ -4,8 +4,8 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": -97.6778,
-    "scrollLeft": -229,
+    "scrollTop": -57.6778,
+    "scrollLeft": -133,
     "zoomLevel": 1,
     "show": 431,
     "database": 4,
@@ -227,7 +227,7 @@
       "EahnYJQ3_mgfNt5MR_yj4": {
         "id": "EahnYJQ3_mgfNt5MR_yj4",
         "name": "product_image",
-        "comment": "상품 당 이미지",
+        "comment": "상품 이미지",
         "columnIds": [
           "Wk6vaJ81eLlrYKm79VysW",
           "YlmWMcO87tQHGnSwx9mNx",
@@ -244,11 +244,11 @@
           "y": 607.3415,
           "zIndex": 753,
           "widthName": 88,
-          "widthComment": 71,
+          "widthComment": 60,
           "color": "#FF5722"
         },
         "meta": {
-          "updateAt": 1717846239768,
+          "updateAt": 1717945673979,
           "createAt": 1717842009934
         }
       },
@@ -578,7 +578,7 @@
         "tableId": "yCPbJvXkv-Lb6ObHGF8Zl",
         "name": "name",
         "comment": "상품 이름",
-        "dataType": "VARCHAR(50)",
+        "dataType": "VARCHAR(20)",
         "default": "",
         "options": 8,
         "ui": {
@@ -589,7 +589,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1717844197274,
+          "updateAt": 1717945687109,
           "createAt": 1717839347760
         }
       },
@@ -1530,7 +1530,7 @@
       "G3fyxx9dOeSXsu6Qu5626": {
         "id": "G3fyxx9dOeSXsu6Qu5626",
         "identification": false,
-        "relationshipType": 8,
+        "relationshipType": 16,
         "startRelationshipType": 2,
         "start": {
           "tableId": "3L_L8UBQqKMGte7wvFFtd",
@@ -1551,7 +1551,7 @@
           "direction": 1
         },
         "meta": {
-          "updateAt": 1717945196272,
+          "updateAt": 1717945616158,
           "createAt": 1717945196272
         }
       }
@@ -1777,7 +1777,7 @@
       -1,
       {
         "name": 1717839391466,
-        "dataType": 1717839378648,
+        "dataType": 1717945687108,
         "options(notNull)": 1717844197273,
         "comment": 1717839389142
       }
@@ -1938,7 +1938,7 @@
       -1,
       {
         "name": 1717842263164,
-        "comment": 1717842253094,
+        "comment": 1717945673979,
         "ui.color": 1717846239767
       }
     ],
@@ -2287,7 +2287,9 @@
       "relationshipEntities",
       1717945196268,
       -1,
-      {}
+      {
+        "relationshipType": 1717945616157
+      }
     ]
   }
 }
