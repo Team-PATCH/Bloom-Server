@@ -13,18 +13,26 @@ let sequelize = new Sequelize(
 const User = require('./user');
 const Market = require('./market');
 const Product = require('./product');
+const InterestProduct = require('./interest_product.js');
+const InterestMarket = require('./interest_market.js');
 
 db.User = User;
 db.Market = Market;
 db.Product = Product;
+db.InterestProduct = InterestProduct;
+db.InterestMarket = InterestMarket;
 
 User.init(sequelize);
 Market.init(sequelize);
 Product.init(sequelize);
+InterestProduct.init(sequelize);
+InterestMarket.init(sequelize);
 
-// User.associate(db);
+User.associate(db);
 Market.associate(db);
 Product.associate(db);
+InterestProduct.associate(db);
+InterestMarket.associate(db);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

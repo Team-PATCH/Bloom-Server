@@ -4,6 +4,11 @@ class User extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
+        user_id: {
+          type: Sequelize.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
         nick: {
           type: Sequelize.STRING(20),
           allowNull: false,
@@ -25,9 +30,9 @@ class User extends Sequelize.Model {
     );
   }
 
-//   static associate(db) {
-//     db.User.hasMany(db.Sale, { foreignKey: 'userID', sourceKey: 'id' });
-//   }
+  static associate(db) {
+    db.User.hasMany(db.InterestProduct, { foreignKey: 'user_id'});
+  }
 }
 
 module.exports = User;

@@ -4,6 +4,11 @@ class Market extends Sequelize.Model {
     static init(sequelize) {
         return super.init(
             {
+                market_id: {
+                    type: Sequelize.INTEGER,
+                    autoIncrement: true,
+                    primaryKey: true,
+                },
                 name: {
                     type: Sequelize.STRING(20),
                     allowNull: false,
@@ -56,8 +61,8 @@ class Market extends Sequelize.Model {
         );
     }
 
-      static associate(db) {
-        db.Market.hasMany(db.Product, { foreignKey: 'market_id', sourceKey: 'id' });
+    static associate(db) {
+        db.Market.hasMany(db.Product, { foreignKey: 'market_id'});
     }
 }
 
