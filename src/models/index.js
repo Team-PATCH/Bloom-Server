@@ -19,7 +19,7 @@ db.User = User;
 User.init(sequelize);
 //Sale.init(sequelize);
 
-User.associate(db);
+//User.associate(db);
 //Sale.associate(db);
 
 db.sequelize = sequelize;
