@@ -9,6 +9,16 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  NODE_ENV: production
+  PORT: ${{ secrets.PORT }}
+  DB_USERNAME: ${{ secrets.DB_USERNAME }}
+  DB_DATABASE: ${{ secrets.DB_DATABASE }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  DB_HOST: ${{ secrets.DB_HOST }}
+  
+
+
 jobs:
   build:
     runs-on: ubuntu-latest
