@@ -11,12 +11,14 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 const marketsRouter = require('./routers/marketsRouter');
+const productsRouter = require('./routers/productsRouter');
 
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/markets',marketsRouter)
+app.use('/products',productsRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello Worlds!')

@@ -1,5 +1,5 @@
 const express = require('express');
-const { Market, Product, InterestMarket, OperatingTime, MarketImage, Sequelize, ProductImag, User } = require('../models');
+const { Market, Product, InterestMarket, OperatingTime, MarketImage, Sequelize, ProductImage, User } = require('../models');
 const router = express.Router();
 const Op = Sequelize.Op;
 // const bcrypt = require('bcrypt');
@@ -186,16 +186,5 @@ router.delete('/interest/:market_id', async (req, res) => {
     }
 });
 
-
-router.get('/:id', async (req, res) => {
-    const id = req.params.id;
-    const options = {
-        where: {
-            id: id,
-        },
-    };
-    const result = await Sale.findAll(options);
-    res.json({ success: true, data: result, message: 'market 조회성공' });
-});
 
 module.exports = router;
