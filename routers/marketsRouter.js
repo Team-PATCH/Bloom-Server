@@ -1,5 +1,5 @@
 const express = require('express');
-const { Market, Product, InterestMarket, OperatingTime, MarketImage, Sequelize, ProductImage } = require('../models');
+const { Market, Product, InterestMarket, OperatingTime, MarketImage, Sequelize, ProductImage, User } = require('../models');
 const router = express.Router();
 const Op = Sequelize.Op;
 // const bcrypt = require('bcrypt');
@@ -107,16 +107,84 @@ router.get('/', async (req, res) => {
     }
 });
 
+//관심 마켓 추가 라우터
+router.post('/interest/:market_id', async (req, res) => {
+    try {
+        const { user_id } = req.body;
+        const { market_id } = req.params;
 
-router.get('/:id', async (req, res) => {
-    const id = req.params.id;
-    const options = {
-        where: {
-            id: id,
-        },
-    };
-    const result = await Sale.findAll(options);
-    res.json({ success: true, data: result, message: 'market 조회성공' });
+        // 유저와 마켓이 존재하는지 확인
+        const user = await User.findByPk(user_id);
+        const market = await Market.findByPk(market_id);
+
+        if (!user || !market) {
+            return res.status(404).json({
+                status: false,
+                message: '유저 또는 마켓을 찾을 수 없습니다.'
+            });
+        }
+
+        // 관심 마켓 추가
+        const interestMarket = await InterestMarket.create({ user_id, market_id });
+
+        res.json({
+            status: true,
+            data: interestMarket,
+            message: '관심 마켓이 성공적으로 추가되었습니다.'
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            status: false,
+            message: '서버 오류'
+        });
+    }
 });
+
+// 관심 마켓 삭제 라우터
+router.delete('/interest/:market_id', async (req, res) => {
+    try {
+        const { user_id } = req.body;
+        const { market_id } = req.params;
+
+        // 유저와 마켓이 존재하는지 확인
+        const user = await User.findByPk(user_id);
+        const market = await Market.findByPk(market_id);
+
+        if (!user || !market) {
+            return res.status(404).json({
+                status: false,
+                message: '유저 또는 마켓을 찾을 수 없습니다.'
+            });
+        }
+
+        // 관심 마켓 삭제
+        const result = await InterestMarket.destroy({
+            where: {
+                user_id,
+                market_id
+            }
+        });
+
+        if (result === 0) {
+            return res.status(404).json({
+                status: false,
+                message: '관심 마켓이 존재하지 않습니다.'
+            });
+        }
+
+        res.json({
+            status: true,
+            message: '관심 마켓이 성공적으로 삭제되었습니다.'
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            status: false,
+            message: '서버 오류'
+        });
+    }
+});
+
 
 module.exports = router;
