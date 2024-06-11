@@ -10,9 +10,9 @@ let sequelize = new Sequelize(
   config
 );
 
-const User = require('./user');
-const Market = require('./market');
-const Product = require('./product');
+const User = require('./user.js');
+const Market = require('./market.js');
+const Product = require('./product.js');
 const InterestProduct = require('./interest_product.js');
 const InterestMarket = require('./interest_market.js');
 const MarketImage = require('./market_image.js');

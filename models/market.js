@@ -41,7 +41,7 @@ class Market extends Sequelize.Model {
                     type: Sequelize.INTEGER,
                     allowNull: false,
                 },
-                coordinate_logitude: {
+                coordinate_longitude: {
                     type: Sequelize.DOUBLE,
                     allowNull: false,
                 },
