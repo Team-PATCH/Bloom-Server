@@ -7,6 +7,8 @@ const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.AZU
 const containerName = process.env.AZURE_CONTAINER_NAME;
 
 const getBlobUrl = async (blobName) => {
+    console.log(containerName)
+    console.log(blobServiceClient)
     const containerClient = blobServiceClient.getContainerClient(containerName);
     const blobClient = containerClient.getBlobClient(blobName);
     return blobClient.url;
