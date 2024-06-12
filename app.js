@@ -25,7 +25,7 @@ app.use('/markets',marketsRouter)
 app.use('/products',productsRouter)
 
 app.get('/', (req, res) => {
-  res.send('Hello Worlds!')
+  res.send('hello')
 })
 
 app.listen(port, () => {
