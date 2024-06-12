@@ -57,17 +57,9 @@ router.get('/', async (req, res) => {
                     ],
                 },
                 {
-                    model: InterestMarket,
-                    attributes: []
-                },
-                {
                     model: OperatingTime,
                     attributes: ['day', 'operating_time']
                 },
-                {
-                    model: MarketImage,
-                    attributes: ['market_image_id', 'name']
-                }
             ]
         });
 
