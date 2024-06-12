@@ -2,6 +2,7 @@ const express = require('express');
 const { Market, Product, InterestMarket, OperatingTime, MarketImage, Sequelize, ProductImage, User } = require('../models');
 const router = express.Router();
 const Op = Sequelize.Op;
+const { getBlobUrl } = require('../azureBlobClient.js');
 // const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
 // const secret = process.env.JWT_SECRET;
@@ -48,7 +49,13 @@ router.get('/', async (req, res) => {
                 {
                     model: Product,
                     limit: 6,
-                    attributes: ['product_id', 'price', 'name']
+                    attributes: ['product_id', 'price', 'name'],
+                    include: [
+                        {
+                            model: ProductImage,
+                            attributes: ['name'],
+                        },
+                    ],
                 },
                 {
                     model: InterestMarket,
@@ -65,11 +72,25 @@ router.get('/', async (req, res) => {
             ]
         });
 
-        const result = markets.map(market => {
+        const result = await Promise.all(markets.map(async (market) => {
             const operatingTime = market.OperatingTimes.reduce((acc, cur) => {
                 acc[cur.day] = cur.operating_time;
                 return acc;
             }, {});
+
+            const simpleProducts = await Promise.all(market.Products.map(async (product) => {
+
+                const images = product.ProductImages.length > 0 
+                ? await Promise.all(product.ProductImages.map(async (img) => await getBlobUrl(img.name)))
+                : [];
+
+                return {
+                    productId: product.product_id,
+                    name: product.name,
+                    price: product.price,
+                    images,
+                };
+            }));
 
             return {
                 marketId: market.market_id,
@@ -79,18 +100,13 @@ router.get('/', async (req, res) => {
                 location: market.location,
                 phoneNumber: market.phone_number,
                 sns: market.sns,
-                simpleProducts: market.Products.map(product => ({
-                    image: product.image,
-                    imageId: product.id,
-                    price: product.price,
-                    name: product.name
-                })),
+                simpleProducts,
                 interestCount: market.interest_count,
                 operatingTime,
                 latitude: market.coordinate_latitude,
-                longitude: market.coordinate_longitude
+                longitude: market.coordinate_longitude,
             };
-        });
+        }));
 
         res.json({
             status: true,
