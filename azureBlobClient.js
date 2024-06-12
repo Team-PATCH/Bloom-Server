@@ -3,8 +3,10 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const blobServiceClient = BlobServiceClient.fromConnectionString('DefaultEndpointsProtocol=https;AccountName=strbloom;AccountKey=JqeT5Ai2iHi80NWS5mGv+9YKrP6mZRxzBSD2VG8ua6W54VFcqCqi/DjhrmE6qDd0sPctiazL44At+ASt8jmw9w==;EndpointSuffix=core.windows.net');
-const containerName = process.env.CONTAINER_NAME;
+
+const blobServiceClient = BlobServiceClient.fromConnectionString('DefaultEndpointsProtocol=https;AccountName=strbloom;AccountKey=MwTCKg0zDrblyizMhaqKLBmQnIesp5V95uUz6DP8SuTx3Avks3t5MawYwPZdyKzCkisAR4SM8BBc+AStiJCmDw==;EndpointSuffix=core.windows.net');
+const containerName = 'product';
+
 
 const getBlobUrl = async (blobName) => {
     const containerClient = blobServiceClient.getContainerClient(containerName);
