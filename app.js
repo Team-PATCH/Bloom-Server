@@ -16,6 +16,7 @@ console.log('CONTAINER_NAME:', process.env.CONTAINER_NAME);
 
 const marketsRouter = require('./routers/marketsRouter');
 const productsRouter = require('./routers/productsRouter');
+const usersRouter = require('./routers/usersRouter');
 
 app.use(morgan('dev'));
 app.use(express.json());
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/markets',marketsRouter)
 app.use('/products',productsRouter)
+app.use('/users',usersRouter)
 
 app.get('/', (req, res) => {
   res.send('hello')

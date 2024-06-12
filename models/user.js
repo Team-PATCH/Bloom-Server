@@ -5,14 +5,14 @@ class User extends Sequelize.Model {
     return super.init(
       {
         user_id: {
-          type: Sequelize.INTEGER,
-          autoIncrement: true,
-          primaryKey: true,
-        },
+          type: Sequelize.STRING,
+          allowNull: false,
+          unique: true,
+      },
         nick: {
           type: Sequelize.STRING(20),
           allowNull: false,
-          unique: true,
+          unique: false,
         },
         email: {
           type: Sequelize.STRING(50),
@@ -32,6 +32,7 @@ class User extends Sequelize.Model {
 
   static associate(db) {
     db.User.hasMany(db.InterestProduct, { foreignKey: 'user_id'});
+    db.User.hasMany(db.InterestMarket, { foreignKey: 'user_id'});
   }
 }
 
