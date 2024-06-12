@@ -11,8 +11,8 @@ const app = express();
 const port = process.env.PORT;
 
 console.log('PORT:', process.env.PORT);
-console.log('AZURE_STORAGE_CONNECTION_STRING:', process.env.AZURE_STORAGE_CONNECTION_STRING);
-console.log('AZURE_CONTAINER_NAME:', process.env.AZURE_CONTAINER_NAME);
+console.log('STORAGE_CONNECTION_STRING:', process.env.STORAGE_CONNECTION_STRING);
+console.log('CONTAINER_NAME:', process.env.CONTAINER_NAME);
 
 const marketsRouter = require('./routers/marketsRouter');
 const productsRouter = require('./routers/productsRouter');

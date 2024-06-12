@@ -3,8 +3,8 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.AZURE_STORAGE_CONNECTION_STRING);
-const containerName = process.env.AZURE_CONTAINER_NAME;
+const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.STORAGE_CONNECTION_STRING);
+const containerName = process.env.CONTAINER_NAME;
 
 const getBlobUrl = async (blobName) => {
     console.log(containerName)
