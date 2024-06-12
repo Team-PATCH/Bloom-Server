@@ -48,7 +48,6 @@ router.get('/', async (req, res) => {
             include: [
                 {
                     model: Product,
-                    limit: 6,
                     attributes: ['product_id', 'price', 'name'],
                     include: [
                         {
@@ -58,17 +57,9 @@ router.get('/', async (req, res) => {
                     ],
                 },
                 {
-                    model: InterestMarket,
-                    attributes: []
-                },
-                {
                     model: OperatingTime,
                     attributes: ['day', 'operating_time']
                 },
-                {
-                    model: MarketImage,
-                    attributes: ['market_image_id', 'name']
-                }
             ]
         });
 
