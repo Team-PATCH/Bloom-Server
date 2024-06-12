@@ -48,7 +48,6 @@ router.get('/', async (req, res) => {
             include: [
                 {
                     model: Product,
-                    limit: 6,
                     attributes: ['product_id', 'price', 'name'],
                     include: [
                         {
