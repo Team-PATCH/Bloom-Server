@@ -2,31 +2,7 @@ const express = require('express');
 const { Market, Product, InterestMarket, OperatingTime, MarketImage, Sequelize, ProductImage, User, InterestProduct } = require('../models');
 const router = express.Router();
 const Op = Sequelize.Op;
-// const bcrypt = require('bcrypt');
-// const jwt = require('jsonwebtoken');
-// const secret = process.env.JWT_SECRET;
-
-// const upload = require('./uploadImage');
-// router.post('/', upload.single('photo'));
-
-// router.post('/', async (req, res) => {
-//   const newPost = req.body;
-//   newPost.userID = req.userID;
-//   newPost.photo = req.filename;
-//   console.log(newPost);
-//   try {
-//     const result = await Sale.create(newPost);
-//     console.log(result);
-//     result.price = parseInt(result.price);
-//     res.json({ success: true, documents: [result], message: 'post 등록 성공' });
-//   } catch (error) {
-//     res.json({
-//       success: false,
-//       documents: [],
-//       message: `post 등록 실패 ${error}`,
-//     });
-//   }
-// });
+const { getBlobUrl } = require('../azureBlobClient.js');
 
 
 // 검색어와 필터로 프로덕트 리스트 반환
@@ -97,7 +73,7 @@ router.get('/', async (req, res) => {
 });
 
 // 단일 상품의 상세 정보를 조회하는 라우터
-router.get('/products/:product_id', async (req, res) => {
+router.get('/:product_id', async (req, res) => {
     try {
         const { product_id } = req.params;
 
