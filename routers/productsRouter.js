@@ -72,6 +72,7 @@ router.get('/', async (req, res) => {
             marketId: product.market_id,
             productId: product.product_id,
             name: product.name,
+            color: product.color,
             category: product.category,
             price: product.price,
             image: product.ProductImages.map(img => img.name),
@@ -94,6 +95,72 @@ router.get('/', async (req, res) => {
         });
     }
 });
+
+// 단일 상품의 상세 정보를 조회하는 라우터
+router.get('/products/:product_id', async (req, res) => {
+    try {
+        const { product_id } = req.params;
+
+        // 단일 상품 상세 정보 조회
+        const product = await Product.findOne({
+            where: { product_id },
+            include: [
+                {
+                    model: ProductImage,
+                    attributes: ['name']
+                },
+                {
+                    model: Market,
+                    attributes: ['market_id', 'name', 'summary', 'address_detail', 'location', 'phone_number']
+                }
+            ]
+        });
+
+        if (!product) {
+            return res.status(404).json({
+                status: false,
+                message: '상품을 찾을 수 없습니다.'
+            });
+        }
+
+        const images = product.ProductImages.length > 0 
+            ? await Promise.all(product.ProductImages.map(async (img) => await getBlobUrl(img.name)))
+            : [];
+
+        const result = {
+            marketId: product.Market.market_id,
+            marketName: product.Market.name,
+            marketSummary: product.Market.summary,
+            marketAddressDetail: product.Market.address_detail,
+            marketLocation: product.Market.location,
+            marketPhoneNumber: product.Market.phone_number,
+            marketSns: product.Market.sns,
+            productId: product.product_id,
+            name: product.name,
+            category: product.category,
+            price: product.price,
+            images,
+            descriptionImage: product.description_image,
+            share: product.share,
+            interestCount: product.interest_count,
+            caution: product.caution
+        };
+
+        res.json({
+            status: true,
+            data: result,
+            message: '상품 상세 정보 조회 성공'
+        });
+    } catch (error) {
+        console.error('Error occurred:', error);
+        res.status(500).json({
+            status: false,
+            data: [],
+            message: '서버 오류'
+        });
+    }
+});
+
 
 //관심 상품 추가 라우터
 router.post('/interest/:product_id', async (req, res) => {
