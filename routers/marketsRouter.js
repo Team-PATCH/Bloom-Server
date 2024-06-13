@@ -88,6 +88,7 @@ router.get('/', async (req, res) => {
                     : [];
 
                 return {
+                    marketId: product.market_id,
                     productId: product.product_id,
                     name: product.name,
                     category: product.category,
