@@ -40,16 +40,8 @@ router.get('/', async (req, res) => {
                     ],
                 },
                 {
-                    model: InterestMarket,
-                    attributes: []
-                },
-                {
                     model: OperatingTime,
                     attributes: ['day', 'operating_time']
-                },
-                {
-                    model: MarketImage,
-                    attributes: ['market_image_id', 'name']
                 }
             ]
         });
@@ -67,7 +59,13 @@ router.get('/', async (req, res) => {
                     : [];
 
                 return {
-                    marketId: product.market_id,
+                    simpleMarket: {
+                        marketId: market.market_id,
+                        name: market.name,
+                        isOperation: market.isOperation,
+                        location: market.location,
+                        phoneNumber: market.phone_number
+                    },
                     productId: product.product_id,
                     name: product.name,
                     category: product.category,
