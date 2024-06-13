@@ -87,7 +87,7 @@ router.get('/:product_id', async (req, res) => {
                 },
                 {
                     model: Market,
-                    attributes: ['market_id', 'name', 'summary', 'address_detail', 'location', 'phone_number']
+                    attributes: ['market_id', 'name', 'isOperation', 'location', 'phone_number']
                 }
             ]
         });
@@ -104,13 +104,13 @@ router.get('/:product_id', async (req, res) => {
             : [];
 
         const result = {
-            marketId: product.Market.market_id,
-            marketName: product.Market.name,
-            marketSummary: product.Market.summary,
-            marketAddressDetail: product.Market.address_detail,
-            marketLocation: product.Market.location,
-            marketPhoneNumber: product.Market.phone_number,
-            marketSns: product.Market.sns,
+            simpleMarket: {
+                marketId: product.Market.market_id,
+                name: product.Market.name,
+                isOperation: product.Market.isOperation,
+                location: product.Market.location,
+                phoneNumber: product.Market.phone_number
+            },
             productId: product.product_id,
             name: product.name,
             category: product.category,
