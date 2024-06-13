@@ -113,8 +113,10 @@ router.get('/', async (req, res) => {
                 simpleProducts: products, // 모든 필드를 포함한 상품 정보
                 interestCount: market.interest_count,
                 operatingTime,
-                latitude: market.coordinate_latitude,
-                longitude: market.coordinate_longitude,
+                coordinate: {
+                    latitude: market.coordinate_latitude,
+                    longitude: market.coordinate_longitude,
+                }
             };
         }));
 

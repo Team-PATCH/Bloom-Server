@@ -41,6 +41,10 @@ class Market extends Sequelize.Model {
                     type: Sequelize.INTEGER,
                     allowNull: false,
                 },
+                isOperation: {
+                    type: Sequelize.BOOLEAN,
+                    allowNull : false,
+                },
                 coordinate_longitude: {
                     type: Sequelize.DOUBLE,
                     allowNull: false,
