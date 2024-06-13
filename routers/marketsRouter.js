@@ -1,7 +1,7 @@
 const express = require('express');
 const { Market, Product, InterestMarket, OperatingTime, MarketImage, Sequelize, ProductImage, User } = require('../models');
-const router = express.Router();
 const Op = Sequelize.Op;
+const router = express.Router();
 const { getBlobUrl } = require('../azureBlobClient.js');
 // const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
@@ -31,12 +31,16 @@ const { getBlobUrl } = require('../azureBlobClient.js');
 
 router.get('/', async (req, res) => {
     try {
-        const { latitude, longitude, location } = req.query;
+        const { min_latitude, max_latitude, min_longitude, max_longitude, location } = req.query;
         const where = {};
 
-        if (latitude && longitude) {
-            where.coordinate_latitude = latitude;
-            where.coordinate_longitude = longitude;
+        if (min_latitude && max_latitude && min_longitude && max_longitude) {
+            where.coordinate_latitude = {
+                [Op.between]: [parseFloat(min_latitude), parseFloat(max_latitude)]
+            };
+            where.coordinate_longitude = {
+                [Op.between]: [parseFloat(min_longitude), parseFloat(max_longitude)]
+            };
         }
 
         if (location) {
