@@ -75,7 +75,7 @@ router.get('/', async (req, res) => {
             color: product.color,
             category: product.category,
             price: product.price,
-            image: product.ProductImages.map(img => img.name),
+            images: product.ProductImages.map(img => img.name),
             descriptionImage: product.description_image,
             share: product.share,
             interestCount: product.interest_count,
