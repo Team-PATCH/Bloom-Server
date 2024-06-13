@@ -43,14 +43,19 @@ router.get('/', async (req, res) => {
                 },
                 {
                     model: Market,
-                    attributes: ['market_id', 'isOperation']
+                    attributes: ['market_id', 'name', 'isOperation', 'location', 'phone_number']
                 }
             ],
         });
 
         const result = products.map(product => ({
-            marketId: product.market_id,
-            isOperation: product.Market.isOperation,
+            simpleMarket: {
+                marketId: product.Market.market_id,
+                name: product.Market.name,
+                isOperation: product.Market.isOperation,
+                location: product.Market.location,
+                phoneNumber: product.Market.phone_number
+            },            
             productId: product.product_id,
             name: product.name,
             color: product.color,
