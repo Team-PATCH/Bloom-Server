@@ -43,12 +43,16 @@ router.get('/', async (req, res) => {
             where.location = location;
         }
 
+        // 디버깅용 where 조건 로그 출력
+        console.log('Where condition:', where);
+
+        // 전체 마켓 데이터 조회
         const markets = await Market.findAll({
             where,
             include: [
                 {
                     model: Product,
-                    attributes: ['product_id', 'price', 'name'],
+                    attributes: ['product_id', 'name', 'category', 'color', 'price', 'description_image', 'share', 'interest_count', 'caution'],
                     include: [
                         {
                             model: ProductImage,
@@ -57,28 +61,42 @@ router.get('/', async (req, res) => {
                     ],
                 },
                 {
+                    model: InterestMarket,
+                    attributes: []
+                },
+                {
                     model: OperatingTime,
                     attributes: ['day', 'operating_time']
                 },
+                {
+                    model: MarketImage,
+                    attributes: ['market_image_id', 'name']
+                }
             ]
         });
 
+        // 조회된 마켓 데이터 처리
         const result = await Promise.all(markets.map(async (market) => {
             const operatingTime = market.OperatingTimes.reduce((acc, cur) => {
                 acc[cur.day] = cur.operating_time;
                 return acc;
             }, {});
 
-            const simpleProducts = await Promise.all(market.Products.map(async (product) => {
-
+            const products = await Promise.all(market.Products.map(async (product) => {
                 const images = product.ProductImages.length > 0 
-                ? await Promise.all(product.ProductImages.map(async (img) => await getBlobUrl(img.name)))
-                : [];
+                    ? await Promise.all(product.ProductImages.map(async (img) => await getBlobUrl(img.name)))
+                    : [];
 
                 return {
                     productId: product.product_id,
                     name: product.name,
+                    category: product.category,
+                    color: product.color,
                     price: product.price,
+                    descriptionImage: product.description_image,
+                    share: product.share,
+                    interestCount: product.interest_count,
+                    caution: product.caution,
                     images,
                 };
             }));
@@ -91,7 +109,7 @@ router.get('/', async (req, res) => {
                 location: market.location,
                 phoneNumber: market.phone_number,
                 sns: market.sns,
-                simpleProducts,
+                simpleProducts: products, // 모든 필드를 포함한 상품 정보
                 interestCount: market.interest_count,
                 operatingTime,
                 latitude: market.coordinate_latitude,
@@ -105,7 +123,7 @@ router.get('/', async (req, res) => {
             message: 'market 조회성공'
         });
     } catch (error) {
-        console.error(error);
+        console.error('Error occurred:', error);
         res.status(500).json({
             status: false,
             data: [],
@@ -113,6 +131,7 @@ router.get('/', async (req, res) => {
         });
     }
 });
+
 
 //관심 마켓 추가 라우터
 router.post('/interest/:market_id', async (req, res) => {
@@ -192,6 +211,69 @@ router.delete('/interest/:market_id', async (req, res) => {
         });
     }
 });
+
+router.get('/:market_id/products', async (req, res) => {
+    try {
+        const { market_id } = req.params;
+
+        // 단일 마켓의 상품 목록 조회
+        const market = await Market.findOne({
+            where: { market_id },
+            include: [
+                {
+                    model: Product,
+                    attributes: ['product_id', 'price', 'name', 'category', 'description_image', 'share', 'interest_count', 'caution'],
+                    include: [
+                        {
+                            model: ProductImage,
+                            attributes: ['name'],
+                        },
+                    ],
+                }
+            ]
+        });
+
+        if (!market) {
+            return res.status(404).json({
+                status: false,
+                message: '마켓을 찾을 수 없습니다.'
+            });
+        }
+
+        const products = await Promise.all(market.Products.map(async (product) => {
+            const images = product.ProductImages.length > 0 
+                ? await Promise.all(product.ProductImages.map(async (img) => await getBlobUrl(img.name)))
+                : [];
+
+            return {
+                marketId: market.market_id,
+                productId: product.product_id,
+                name: product.name,
+                category: product.category,
+                price: product.price,
+                image: images,
+                descriptionImage: product.description_image,
+                share: product.share,
+                interestCount: product.interest_count,
+                caution: product.caution,
+            };
+        }));
+
+        res.json({
+            status: true,
+            data: products,
+            message: '상품 목록 조회 성공'
+        });
+    } catch (error) {
+        console.error('Error occurred:', error);
+        res.status(500).json({
+            status: false,
+            data: [],
+            message: '서버 오류'
+        });
+    }
+});
+
 
 
 module.exports = router;
