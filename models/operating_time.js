@@ -12,7 +12,7 @@ class OperatingTime extends Sequelize.Model {
                 day: {
                     type: Sequelize.STRING(10),
                     allowNull: false,
-                    unique: true,
+                    unique: false,
                 },
                 operating_time: {
                     type: Sequelize.STRING(20),
