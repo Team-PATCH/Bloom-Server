@@ -52,7 +52,7 @@ router.get('/', async (req, res) => {
             include: [
                 {
                     model: Product,
-                    attributes: ['product_id', 'name', 'category', 'color', 'price', 'description_image', 'share', 'interest_count', 'caution'],
+                    attributes: ['market_id','product_id', 'name', 'category', 'color', 'price', 'description_image', 'share', 'interest_count', 'caution'],
                     include: [
                         {
                             model: ProductImage,
