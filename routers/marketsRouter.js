@@ -58,6 +58,9 @@ router.get('/', async (req, res) => {
                     ? await Promise.all(product.ProductImages.map(async (img) => await getBlobUrl(img.name)))
                     : [];
 
+            const descriptionImage = await getBlobUrl(product.description_image);
+
+
                 return {
                     simpleMarket: {
                         marketId: market.market_id,
@@ -71,7 +74,7 @@ router.get('/', async (req, res) => {
                     category: product.category,
                     color: product.color,
                     price: product.price,
-                    descriptionImage: product.description_image,
+                    descriptionImage,
                     share: product.share,
                     interestCount: product.interest_count,
                     caution: product.caution,
