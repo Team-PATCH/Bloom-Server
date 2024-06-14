@@ -1,5 +1,5 @@
 const express = require('express');
-const { Market, Product, InterestMarket, OperatingTime, MarketImage, Sequelize, ProductImage, User, InterestProduct } = require('../models');
+const { Market, Product, MarketImage, Sequelize, ProductImage, User, InterestProduct } = require('../models');
 const router = express.Router();
 const Op = Sequelize.Op;
 const { getBlobUrl } = require('../azureBlobClient.js');
@@ -20,20 +20,21 @@ router.get('/', async (req, res) => {
         }
 
         if (minPrice) {
-            where.price = { [Op.gte]: minPrice };
+            where.price = { [Op.gte]: parseFloat(minPrice) };
         }
 
         if (maxPrice) {
             if (!where.price) {
                 where.price = {};
             }
-            where.price[Op.lte] = maxPrice;
+            where.price[Op.lte] = parseFloat(maxPrice);
         }
 
         if (color) {
             where.color = color;
         }
 
+        // 전체 제품 데이터 조회
         const products = await Product.findAll({
             where,
             include: [
@@ -48,24 +49,33 @@ router.get('/', async (req, res) => {
             ],
         });
 
-        const result = products.map(product => ({
-            simpleMarket: {
-                marketId: product.Market.market_id,
-                name: product.Market.name,
-                isOperation: product.Market.isOperation,
-                location: product.Market.location,
-                phoneNumber: product.Market.phone_number
-            },            
-            productId: product.product_id,
-            name: product.name,
-            color: product.color,
-            category: product.category,
-            price: product.price,
-            images: product.ProductImages.map(img => img.name),
-            descriptionImage: product.description_image,
-            share: product.share,
-            interestCount: product.interest_count,
-            caution: product.caution,
+        // 조회된 제품 데이터 처리
+        const result = await Promise.all(products.map(async (product) => {
+            const images = product.ProductImages.length > 0 
+                ? await Promise.all(product.ProductImages.map(async (img) => await getBlobUrl(img.name)))
+                : [];
+
+            const descriptionImage = await getBlobUrl(product.description_image);
+
+            return {
+                simpleMarket: {
+                    marketId: product.Market.market_id,
+                    name: product.Market.name,
+                    isOperation: product.Market.isOperation,
+                    location: product.Market.location,
+                    phoneNumber: product.Market.phone_number
+                },            
+                productId: product.product_id,
+                name: product.name,
+                color: product.color,
+                category: product.category,
+                price: product.price,
+                images,
+                descriptionImage,
+                share: product.share,
+                interestCount: product.interest_count,
+                caution: product.caution,
+            };
         }));
 
         res.json({
@@ -113,6 +123,8 @@ router.get('/:product_id', async (req, res) => {
             ? await Promise.all(product.ProductImages.map(async (img) => await getBlobUrl(img.name)))
             : [];
 
+        const descriptionImage = await Promise.all(product.descriptionImage.map(async (img) => await getBlobUrl(img.name)));
+
         const result = {
             simpleMarket: {
                 marketId: product.Market.market_id,
@@ -126,7 +138,7 @@ router.get('/:product_id', async (req, res) => {
             category: product.category,
             price: product.price,
             images,
-            descriptionImage: product.description_image,
+            descriptionImage,
             share: product.share,
             interestCount: product.interest_count,
             caution: product.caution
